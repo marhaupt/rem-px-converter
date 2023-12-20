@@ -4,6 +4,8 @@
     let inputValue: string = '';
     let transformedOutput: string | undefined;
     let copied = false;
+    let clickX = 0;
+    let clickY = 0;
 
     $: if (inputValue.trim().length > 0) {
         transformedOutput = transformRemToPx(inputValue);
@@ -11,26 +13,39 @@
         transformedOutput = undefined;
     }
 
-    const copyOutput = () => {
+    const copyOutput = (e: MouseEvent) => {
         if (transformedOutput) {
             navigator.clipboard.writeText(transformedOutput).then(() => {
                 copied = true;
-                setTimeout(() => copied = false, 80)
+
+                clickX = e.clientX;
+                clickY = e.clientY;
+
+                setTimeout(() => (copied = false), 200);
             });
         }
     };
 </script>
 
 <main>
+    <div
+        class="copy-notification"
+        class:copied
+        style:--click-x={`${clickX}px`}
+        style:--click-y={`${clickY}px`}
+    >
+        Copied!
+    </div>
     <h1>rem2px</h1>
     <textarea bind:value={inputValue} />
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
     <pre
         on:click={copyOutput}
+        style:--click-x={`${clickX}px`}
+        style:--click-y={`${clickY}px`}
         class:empty={transformedOutput === undefined}
-        class:copied
-    >{transformedOutput ?? 'nothing yet'}</pre>
+        class:copied>{transformedOutput ?? 'nothing yet'}</pre>
 </main>
 
 <style>
@@ -57,7 +72,7 @@
         font-family: monospace;
         font-size: 16px;
         line-height: 1.8;
-        
+
         @media (width < 500px) {
             grid-template-columns: minmax(0, 1fr);
         }
@@ -76,7 +91,9 @@
         border: 2px solid var(--color-purple);
         outline: none;
         color: var(--color-white);
-        transition: border-color 200ms ease, box-shadow 200ms ease;
+        transition:
+            border-color 200ms ease,
+            box-shadow 200ms ease;
         white-space: nowrap;
         border-radius: 4px;
 
@@ -84,7 +101,6 @@
             border-color: var(--color-pink);
             box-shadow: 0 2px 16px var(--color-pink-alpha60);
         }
-
     }
 
     pre {
@@ -94,19 +110,44 @@
         overflow: scroll;
         transition-property: color;
         transition-timing-function: ease-out;
-        transition-duration: 800ms;
-        
+        transition-duration: 600ms;
+
         &:not(.empty) {
             cursor: pointer;
         }
-        
+
         &.empty {
             opacity: 0.5;
         }
-        
+
         &.copied {
             color: var(--color-pink);
             transition-duration: 50ms;
+        }
+    }
+
+    .copy-notification {
+        display: block;
+        background-color: var(--color-purple);
+        position: absolute;
+        top: var(--click-y);
+        left: var(--click-x);
+        opacity: 0;
+        color: var(--color-white);
+        transition-property: opacity;
+        transition-timing-function: ease-out;
+        transition-duration: 300ms;
+        transition-delay: 300ms;
+        padding: 6px 16px;
+        border-radius: 4px;
+        box-shadow: 0 0 12px var(--color-purple);
+        translate: -10% -90%;
+        pointer-events: none;
+
+        &.copied {
+            transition-duration: 50ms;
+            transition-delay: 0ms;
+            opacity: 1;
         }
     }
 </style>
