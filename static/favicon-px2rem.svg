@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 144 144" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1.2526,0,0,1.2526,-19.9462,-11.7212)">
+        <g>
+            <g id="_2px" serif:id="2px" transform="matrix(1,0,0,1,6.40637,25.1424)">
+                <text x="12.988px" y="35.907px" style="font-family:'FiraCode-Medium', 'Fira Code';font-weight:500;font-size:58.883px;fill:rgb(255,0,141);">px</text>
+            </g>
+            <g id="_2px1" serif:id="2px" transform="matrix(1,0,0,1,80.1347,27.6887)">
+                <text x="12.988px" y="35.907px" style="font-family:'FiraCode-Medium', 'Fira Code';font-weight:500;font-size:58.883px;fill:rgb(117,0,255);">2</text>
+            </g>
+            <g transform="matrix(1,0,0,1,4.25082,70.5847)">
+                <text x="12.988px" y="35.907px" style="font-family:'FiraCode-Medium', 'Fira Code';font-weight:500;font-size:58.883px;fill:rgb(255,0,141);">rem</text>
+            </g>
+        </g>
+    </g>
+</svg>

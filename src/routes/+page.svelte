@@ -1,18 +1,27 @@
 <script lang="ts">
+    import Size from '$lib/components/Size.svelte';
     import Toggle from '$lib/components/Toggle.svelte';
+    import {
+        DEFAULT_REM_SIZE,
+        LOCAL_STORAGE_MODE_KEY,
+        LOCAL_STORAGE_REM_BASE_SIZE_KEY
+    } from '$lib/constants';
+    import type { Mode } from '$lib/types';
     import { transformPxToRem, transformRemToPx } from '$lib/utils';
+    import { onMount } from 'svelte';
     import { fly } from 'svelte/transition';
+    import { browser } from '$app/environment';
 
     let inputValue: string = '';
     let transformedOutput: string | undefined;
     let copied = false;
     let clickX = 0;
     let clickY = 0;
-    let remSize = 16;
+    let remSize: number | null = null;
 
-    let mode: 'rem2px' | 'px2rem' = 'rem2px';
+    let mode: Mode | null = null;
 
-    $: if (inputValue.trim().length > 0) {
+    $: if (inputValue.trim().length > 0 && remSize !== null) {
         transformedOutput =
             mode === 'rem2px'
                 ? transformRemToPx(inputValue, remSize)
@@ -41,8 +50,38 @@
             mode = 'rem2px';
         }
     };
+
+    onMount(() => {
+        if (browser) {
+            const remSizeFromLocalStorage = localStorage.getItem(LOCAL_STORAGE_REM_BASE_SIZE_KEY);
+            const modeFromLocalStorage = localStorage.getItem(LOCAL_STORAGE_MODE_KEY);
+
+            remSize = remSizeFromLocalStorage
+                ? parseInt(remSizeFromLocalStorage)
+                : DEFAULT_REM_SIZE;
+
+            console.log('MODE', mode);
+            mode = modeFromLocalStorage ? (modeFromLocalStorage as Mode) : 'rem2px';
+        } else {
+            remSize = DEFAULT_REM_SIZE;
+        }
+    });
+
+    $: {
+        if (mode !== null && browser) {
+            localStorage.setItem(LOCAL_STORAGE_MODE_KEY, mode);
+        }
+    }
+
+    $: if (remSize !== null && browser) {
+        localStorage.setItem(LOCAL_STORAGE_REM_BASE_SIZE_KEY, remSize.toString());
+    }
 </script>
 
+<svelte:head>
+    <link rel="icon" href={`/favicon-${mode}.svg`} />
+    <title>{mode}</title>
+</svelte:head>
 <main>
     <div
         class="copy-notification"
@@ -52,8 +91,7 @@
     >
         Copied!
     </div>
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+
     <header>
         {#key mode}
             <h1 in:fly={{ x: 0, y: -30 }} out:fly={{ x: 0, y: 30 }}>
@@ -68,7 +106,15 @@
             <Toggle on:click={changeMode} />
         </div>
     </header>
-    <textarea bind:value={inputValue} />
+
+    <div class="size">
+        <Size bind:remSize />
+    </div>
+
+    <section class="left">
+        <textarea bind:value={inputValue} />
+    </section>
+
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
     <pre
@@ -81,16 +127,11 @@
 
 <style>
     header {
-        margin-bottom: 20px;
         grid-column: 1 / -1;
         display: grid;
         grid-template-columns: 1fr auto 1fr;
         column-gap: 6px;
         align-items: center;
-
-        @media (width < 500px) {
-            margin-bottom: 10px;
-        }
     }
 
     h1 {
@@ -122,8 +163,6 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         column-gap: 20px;
         row-gap: 20px;
-        font-family: 'Fira Mono', monospace;
-        font-size: 16px;
         line-height: 1.8;
 
         @media (width < 500px) {
@@ -131,10 +170,19 @@
         }
     }
 
+    .size {
+        grid-column: 1 / -1;
+    }
+
+    section.left {
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+    }
+
     textarea {
         position: relative;
         resize: vertical;
-        field-sizing: content;
         min-height: 5lh;
         max-height: 10lh;
         padding: 10px 18px;
@@ -180,11 +228,6 @@
             transition-duration: 50ms;
         }
 
-        &.empty::after {
-            opacity: 0;
-            transition-delay: 0ms;
-        }
-
         &::after {
             content: 'Click to copy';
             position: absolute;
@@ -193,8 +236,23 @@
             font-size: 2em;
             z-index: -1;
             text-align: center;
-            opacity: 0.5;
+            opacity: 0.4;
             transition: opacity 400ms ease 100ms;
+        }
+
+        &.copied::after {
+            opacity: 0.2;
+            transition-delay: 0ms;
+            transition-duration: 50ms;
+        }
+
+        &.empty::after {
+            opacity: 0;
+            transition-delay: 0ms;
+        }
+
+        @media (width < 500px) {
+            padding-inline: 18px;
         }
     }
 
@@ -215,6 +273,7 @@
         box-shadow: 0 0 12px var(--color-purple);
         translate: -10% -90%;
         pointer-events: none;
+        z-index: 100;
 
         &.copied {
             transition-duration: 50ms;
