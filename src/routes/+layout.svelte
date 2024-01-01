@@ -1,10 +1,10 @@
 <script lang="ts">
     import Footer from '$lib/components/Footer.svelte';
-    import '$lib/styles/normalize.css';
-    import '$lib/styles/styles.css';
+    import '../app.pcss';
+    import '../normalize.css';
 </script>
 
 <div>
     <slot />
 </div>
-<Footer />
+<Footer></Footer>

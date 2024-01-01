@@ -37,7 +37,7 @@
     </div>
 </section>
 
-<style>
+<style lang="postcss">
     section {
         display: flex;
         align-items: center;
@@ -60,21 +60,23 @@
         padding: 0;
         outline: none;
         padding: 2px;
-    }
+        transition-property: color, border-bottom-color;
+        transition-duration: 200ms;
 
-    input:focus {
-        color: var(--color-white);
-        border-bottom-color: var(--color-pink);
-    }
+        &:focus {
+            color: var(--color-white);
+            border-bottom-color: var(--color-pink);
+        }
 
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
-    /* Firefox */
-    input[type='number'] {
-        -moz-appearance: textfield;
+        /* Firefox */
+        &[type='number'] {
+            -moz-appearance: textfield;
+        }
     }
 </style>
