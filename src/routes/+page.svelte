@@ -128,23 +128,27 @@
 <style>
     header {
         grid-column: 1 / -1;
+
         display: grid;
         grid-template-columns: 1fr auto 1fr;
-        column-gap: 6px;
         align-items: center;
+        column-gap: 6px;
     }
 
     h1 {
         grid-column: 2;
         grid-row: 1;
-        margin: 0;
-        text-align: center;
-        color: var(--color-pink);
-        width: 6ch;
-    }
 
-    h1 span {
-        text-shadow: 0 0 10px currentColor;
+        width: 6ch;
+        margin: 0;
+
+        text-align: center;
+
+        color: var(--color-pink);
+
+        & span {
+            text-shadow: 0 0 10px currentColor;
+        }
     }
 
     .title.to {
@@ -157,12 +161,14 @@
     }
 
     main {
-        max-width: 700px;
-        margin-inline: auto;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         column-gap: 20px;
         row-gap: 20px;
+
+        max-width: 700px;
+        margin-inline: auto;
+
         line-height: 1.8;
 
         @media (width < 500px) {
@@ -182,38 +188,62 @@
 
     textarea {
         position: relative;
-        resize: vertical;
+
         min-height: 5lh;
         max-height: 10lh;
         padding: 10px 18px;
+
         font-size: inherit;
         line-height: inherit;
+        white-space: nowrap;
+
+        color: var(--color-white);
         background-color: var(--color-gray-dark);
         border: 2px solid var(--color-purple);
+        border-radius: 4px;
         outline: none;
-        color: var(--color-white);
+
         transition:
             border-color 200ms ease,
             box-shadow 200ms ease;
-        white-space: nowrap;
-        border-radius: 4px;
+
+        resize: vertical;
 
         &:focus {
-            border-color: var(--color-pink);
             box-shadow: 0 2px 16px var(--color-pink-alpha60);
+            border-color: var(--color-pink);
         }
     }
 
     pre {
+        position: relative;
+
+        max-width: 100%;
+        min-height: 5lh;
         margin: 0;
         padding-block: 10px;
-        max-width: 100%;
-        overflow: scroll;
+
         transition-property: color;
-        transition-timing-function: ease-out;
         transition-duration: 600ms;
-        position: relative;
-        min-height: 5lh;
+        transition-timing-function: ease-out;
+
+        overflow: scroll;
+
+        &::after {
+            position: absolute;
+            inset: 14px 0;
+            z-index: -1;
+
+            content: 'Click to copy';
+
+            font-size: 2em;
+            text-align: center;
+
+            color: var(--color-pink);
+
+            opacity: 0.4;
+            transition: opacity 400ms ease 100ms;
+        }
 
         &:not(.empty) {
             cursor: pointer;
@@ -221,34 +251,22 @@
 
         &.empty {
             opacity: 0.5;
+
+            &::after {
+                opacity: 0;
+                transition-delay: 0ms;
+            }
         }
 
         &.copied {
             color: var(--color-pink);
             transition-duration: 50ms;
-        }
 
-        &::after {
-            content: 'Click to copy';
-            position: absolute;
-            inset: 14px 0;
-            color: var(--color-pink);
-            font-size: 2em;
-            z-index: -1;
-            text-align: center;
-            opacity: 0.4;
-            transition: opacity 400ms ease 100ms;
-        }
-
-        &.copied::after {
-            opacity: 0.2;
-            transition-delay: 0ms;
-            transition-duration: 50ms;
-        }
-
-        &.empty::after {
-            opacity: 0;
-            transition-delay: 0ms;
+            &::after {
+                opacity: 0.2;
+                transition-duration: 50ms;
+                transition-delay: 0ms;
+            }
         }
 
         @media (width < 500px) {
@@ -257,28 +275,33 @@
     }
 
     .copy-notification {
-        display: block;
-        background-color: var(--color-purple);
         position: absolute;
         top: var(--click-y);
         left: var(--click-x);
-        opacity: 0;
-        color: var(--color-white);
-        transition-property: opacity;
-        transition-timing-function: ease-out;
-        transition-duration: 300ms;
-        transition-delay: 300ms;
-        padding: 6px 16px;
-        border-radius: 4px;
-        box-shadow: 0 0 12px var(--color-purple);
-        translate: -10% -90%;
-        pointer-events: none;
         z-index: 100;
 
+        display: block;
+
+        padding: 6px 16px;
+
+        color: var(--color-white);
+        background-color: var(--color-purple);
+        border-radius: 4px;
+        box-shadow: 0 0 12px var(--color-purple);
+
+        opacity: 0;
+        transition-property: opacity;
+        transition-duration: 300ms;
+        transition-timing-function: ease-out;
+        transition-delay: 300ms;
+
+        translate: -10% -90%;
+        pointer-events: none;
+
         &.copied {
+            opacity: 1;
             transition-duration: 50ms;
             transition-delay: 0ms;
-            opacity: 1;
         }
     }
 </style>

@@ -40,10 +40,10 @@
 <style lang="postcss">
     section {
         display: flex;
-        align-items: center;
-        justify-content: center;
         display: grid;
         grid-template-columns: 1fr auto 1fr;
+        justify-content: center;
+        align-items: center;
         column-gap: 1ch;
     }
 
@@ -52,16 +52,18 @@
     }
 
     input {
-        background: none;
+        padding: 2px;
+
         color: var(--color-pink);
+        background: none;
+        outline: none;
+
+        transition-property: color, border-bottom-color;
+        transition-duration: 200ms;
+
         border-width: 2px 0;
         border-style: solid;
         border-color: transparent;
-        padding: 0;
-        outline: none;
-        padding: 2px;
-        transition-property: color, border-bottom-color;
-        transition-duration: 200ms;
 
         &:focus {
             color: var(--color-white);
@@ -70,8 +72,8 @@
 
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
-            -webkit-appearance: none;
             margin: 0;
+            -webkit-appearance: none;
         }
 
         /* Firefox */

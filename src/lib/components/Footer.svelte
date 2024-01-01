@@ -10,15 +10,17 @@
 
 <style>
     footer {
-        text-align: center;
         margin-top: 32px;
+        text-align: center;
     }
 
     footer a {
-        color: var(--color-white);
         text-decoration-color: transparent;
-        transition: text-decoration-color 200ms ease;
         text-underline-offset: 0.2em;
+
+        color: var(--color-white);
+
+        transition: text-decoration-color 200ms ease;
     }
 
     footer a:hover {

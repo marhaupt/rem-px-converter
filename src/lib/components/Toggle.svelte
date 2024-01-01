@@ -26,15 +26,19 @@
     .toggle-icon {
         --padding: 10px;
 
-        padding: var(--padding);
-        font-size: 18px;
-        border: none;
-        background: none;
-        cursor: pointer;
-        color: var(--color-purple);
-        line-height: 1;
         height: calc(2 * var(--padding) + 1em);
+        padding: var(--padding);
+
+        font-size: 18px;
+        line-height: 1;
+
+        color: var(--color-purple);
+        background: none;
+        border: none;
+
         transition: color 200ms ease;
+
+        cursor: pointer;
     }
 
     .toggle-icon:hover {
@@ -42,8 +46,8 @@
     }
 
     .toggle-icon svg {
-        fill: currentColor;
         height: 1em;
+        fill: currentColor;
     }
 
     .toggle-icon:focus svg {
